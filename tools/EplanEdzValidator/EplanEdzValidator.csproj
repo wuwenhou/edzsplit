@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <AssemblyName>EplanEdzValidator</AssemblyName>
+    <RootNamespace>EdzSplit.Validator</RootNamespace>
+    <OutputType>Exe</OutputType>
+    <Version>0.1.0</Version>
+    <Authors>edzsplit contributors</Authors>
+    <Description>Test-only oracle: imports EDZ files into a scratch EPLAN Parts Database and asserts results. Never touches the main database.</Description>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <EplanApiDir Condition="'$(EplanApiDir)' == ''">$(EPLAN_API_DIR)</EplanApiDir>
+    <EplanApiDir Condition="'$(EplanApiDir)' == '' And Exists('C:\Program Files\EPLAN\Platform\2022.0.3\Bin\Eplan.EplApi.MasterDatau.dll')">C:\Program Files\EPLAN\Platform\2022.0.3\Bin</EplanApiDir>
+  </PropertyGroup>
+
+  <Target Name="FailWhenEplanApiMissing" BeforeTargets="BeforeCompile"
+          Condition="'$(EplanApiDir)' == '' Or !Exists('$(EplanApiDir)\Eplan.EplApi.MasterDatau.dll')">
+    <Error Code="VALID001"
+           Text="EPLAN API assemblies not found. Build with -p:EplanApiDir=&quot;C:\Program Files\EPLAN\Platform\&lt;version&gt;\Bin&quot;" />
+  </Target>
+
+  <ItemGroup Condition="'$(EplanApiDir)' != '' And Exists('$(EplanApiDir)\Eplan.EplApi.MasterDatau.dll')">
+    <Reference Include="Eplan.EplApi.AFu">
+      <HintPath>$(EplanApiDir)\Eplan.EplApi.AFu.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.Baseu">
+      <HintPath>$(EplanApiDir)\Eplan.EplApi.Baseu.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.Guiu">
+      <HintPath>$(EplanApiDir)\Eplan.EplApi.Guiu.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Eplan.EplApi.MasterDatau">
+      <HintPath>$(EplanApiDir)\Eplan.EplApi.MasterDatau.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

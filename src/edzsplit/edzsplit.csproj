@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <Nullable>annotations</Nullable>
+    <AssemblyName>edzsplit</AssemblyName>
+    <RootNamespace>EdzSplit</RootNamespace>
+    <Version>0.1.0</Version>
+    <InformationalVersion>0.1.0-poc</InformationalVersion>
+    <Description>Split a multi-device EPLAN EDZ into one EDZ per part — Linux-native, no EPLAN runtime required.</Description>
+    <Authors>edzsplit contributors</Authors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == ''">
+    <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+</Project>

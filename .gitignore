@@ -1,0 +1,15 @@
+# Build outputs
+bin/
+obj/
+out/
+*.tmp
+*.user
+*.suo
+.vs/
+
+# Tooling caches
+.idea/
+.vscode/
+
+# Local evidence and secrets
+evidence/local/
