@@ -222,15 +222,19 @@ internal static class Splitter
                         {
                             var source = package.Items.First(i => ReferenceEquals(i, item) || (i.Type == item.Type && i.Name == item.Name && i.Locator == item.Locator));
                             var resolved = graph.Resolve(source);
-                            if (resolved != null && !string.Equals(resolved.Path, item.MemberPath, StringComparison.OrdinalIgnoreCase))
+                            if (resolved != null)
                             {
-                                // Rewrite locator to the actual archive entry name (keep sub-directories).
-                                var prefix = $"items\\{item.Type}\\";
-                                var actual = ArchiveIndex.Normalize(resolved.Path);
-                                item.Locator = actual.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
-                                    ? actual.Substring(prefix.Length)
-                                    : actual;
-                                events.Write("locator.repaired", new { part = partKey, from = source.Locator, to = item.Locator });
+                                // Compare normalized paths — 7z lists forward slashes on Linux, backslashes on Windows.
+                                var normalizedResolved = ArchiveIndex.Normalize(resolved.Path);
+                                if (!string.Equals(normalizedResolved, item.MemberPath, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    // Rewrite locator to the actual archive entry name (keep sub-directories).
+                                    var prefix = $"items\\{item.Type}\\";
+                                    item.Locator = normalizedResolved.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
+                                        ? normalizedResolved.Substring(prefix.Length)
+                                        : normalizedResolved;
+                                    events.Write("locator.repaired", new { part = partKey, from = source.Locator, to = item.Locator });
+                                }
                             }
                         }
                         manifestClone.Packages.Add(clone);

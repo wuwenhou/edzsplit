@@ -1,4 +1,6 @@
-# EVIDENCE — edzsplit 0.1.0-poc
+# EVIDENCE — edzsplit 0.1.1
+
+> v0.1.1 — fix cross-platform defect found on Linux: the locator-repair comparison mixed 7z's forward-slash listing (Linux) with backslash locators (Windows), logging a bogus `locator.repaired` line for every item on Linux. Fixed by normalizing both sides before comparing.
 
 All commands were run on the development host (Windows x64) unless marked otherwise. Paths are scrubbed (`<workspace>`, `<home>`). Outputs are trimmed to essential lines; `…` marks elided lines. Times are local.
 

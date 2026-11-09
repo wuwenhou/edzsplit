@@ -1,6 +1,6 @@
 # Báo cáo nghiên cứu: Tách EDZ EPLAN nhiều thiết bị trên Linux (không EPLAN runtime)
 
-**Dự án:** edzsplit · **Phiên bản:** 0.1.0-poc · **Ngày:** 2026-11-09 · **Bản quyền:** MIT · **Tác giả:** edzsplit contributors
+**Dự án:** edzsplit · **Phiên bản:** 0.1.1 · **Ngày:** 2026-11-09 · **Bản quyền:** MIT · **Tác giả:** edzsplit contributors
 
 > **TRẠNG THÁI CHỨNG MINH (đọc trước tiên):** Tool đã được kiểm chứng trọn vẹn ở mức **cấu trúc** (7z integrity, manifest parse, mọi tham chiếu item resolve được, không path traversal) trên dữ liệu hãng thật: EKF (4.540 part), Theben (86 EDZ con), Rittal/FESTO (parts.edz). Việc **import một EDZ đầu ra vào Parts Database thật của EPLAN CHƯA được thực hiện** trong phiên làm việc này — máy phát triển không tạo/mở được parts database scratch (chi tiết §10). Vì tiêu chí thành công của đề bài yêu cầu import thật, báo cáo này **không tuyên bố bài toán đã được giải quyết**; nó chứng minh pipeline đọc/lập kế hoạch/tách/ghi/kiểm chứng hoạt động, và chỉ rõ phần còn thiếu đúng một bước: chạy import oracle (§10.2).
 
