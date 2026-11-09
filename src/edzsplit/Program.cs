@@ -293,7 +293,7 @@ internal static class Program
         var badCount = 0;
         foreach (var member in nested)
         {
-            var path = Path.Combine(outDir, ArchiveIndex.Normalize(member.Path));
+            var path = ArchiveIndex.DiskPath(outDir, member.Path);
             if (!File.Exists(path))
             {
                 Console.WriteLine("MISSING: " + member.Path);

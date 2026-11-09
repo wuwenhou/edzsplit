@@ -1,6 +1,8 @@
-# EVIDENCE — edzsplit 0.1.1
+# EVIDENCE — edzsplit 0.1.2
 
 > v0.1.1 — fix cross-platform defect found on Linux: the locator-repair comparison mixed 7z's forward-slash listing (Linux) with backslash locators (Windows), logging a bogus `locator.repaired` line for every item on Linux. Fixed by normalizing both sides before comparing.
+>
+> v0.1.2 — fix Case A verification path handling on Linux: 7z lists `Theben/THB.0060002.edz` (forward slashes); joining it with a backslash-normalized path made every nested EDZ report MISSING despite correct extraction. Now resolved via `ArchiveIndex.DiskPath`.
 
 All commands were run on the development host (Windows x64) unless marked otherwise. Paths are scrubbed (`<workspace>`, `<home>`). Outputs are trimmed to essential lines; `…` marks elided lines. Times are local.
 

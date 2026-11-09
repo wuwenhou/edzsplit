@@ -1,6 +1,6 @@
 # Research report: Splitting multi-device EPLAN EDZ files on Linux (no EPLAN runtime)
 
-**Project:** edzsplit · **Version:** 0.1.1 · **Date:** 2026-11-09 · **License:** MIT · **Authors:** edzsplit contributors
+**Project:** edzsplit · **Version:** 0.1.2 · **Date:** 2026-11-09 · **License:** MIT · **Authors:** edzsplit contributors
 
 > **PROOF STATUS (read first):** The tool has been verified end-to-end at the **structural** level (7z integrity, manifest parsing, resolvable item references, path-traversal guard) on real manufacturer data: EKF (4 540 parts), Theben (86 nested EDZ), Rittal/FESTO (`parts.edz`). **Importing an output EDZ into a live EPLAN Parts Database was NOT executed in this session** — the development machine cannot create or open a scratch parts database (details in §10). Because the brief's success criterion requires a real import, this report **does not claim the problem is solved**; it proves the read/plan/split/write/verify pipeline works, and isolates the single missing step: running the import oracle (§10.2).
 
