@@ -134,6 +134,45 @@ $ edzsplit case-a Theben.7z --out <ws>/out/poc/theben
 Extracted 86 EDZ files to <ws>/out/poc/theben: ok=86, bad=0
 ```
 
+### 4.7 Hirschmann.edz — FULL split via the Rust port (byte-identical)
+
+A fresh Hirschmann archive (216,681,923 bytes, SHA-256
+`9F7C0494BB5281160429375D3B3AD1C05A9D677707544B6856D7C2D24B016B79`) was split
+with the Rust port `edzsplit-rs` (<https://github.com/wuwenhou/edzsplit-rs>,
+CI-built; not part of this repository) on the same host:
+
+```
+$ edzsplit inspect Hirschmann.edz
+Entries   : 1443   (uncompressed 457,084,995 bytes)
+Packages  : 521  (part=521)
+Items     : 3690
+Refs      : direct=3690 repaired=0 missing=0 (unique missing=0)
+
+$ edzsplit split Hirschmann.edz --out <ws>/out/hirschmann --log <ws>/out/hirschmann.jsonl
+planned=474 written=474 resumed=0 failed=0 totalBytes=1,058,194,581 warnings=0
+wall clock ≈ 7 s (rust, --jobs auto)
+
+$ edzsplit verify <all 474 outputs>
+→ all OK (Missing:0)
+```
+
+The patched C# splitter was run on the same source as a control:
+
+```
+$ edzsplit-patched split Hirschmann.edz --out <ws>/out/hirschmann-csharp
+Planned : 521   Written : 521   Failed : 0   totalBytes=1,102,812,223
+# 47 duplicate part packages are identical → 474 unique files on disk
+```
+
+**All 474 output files are byte-identical between the Rust port and the patched
+C# build** (file name + SHA-256 comparison of every file). The Rust port reports
+the deduplication in `part.duplicate` events (474 planned) instead of writing the
+same output twice; the C# build rewrites those files and reports 521 writes.
+Output locations: original contents are manufacturer data, redistributed by
+Hirschmann as a public download.
+**Import-level proof is still not available** (see §5); structural verification
+of all 474 outputs passes.
+
 ## 5. Import oracle (`tools/EplanEdzValidator`)
 
 **Build:** OK (net48, x64; references `C:\Program Files\EPLAN\Platform\2022.0.3\Bin\Eplan.EplApi.*.dll`).
@@ -190,5 +229,6 @@ EplanEdzValidator import --db <scratch-dir>\scratch.adb --edz <path-to-output.ed
 | Output EDZ manifest parses, refs resolvable, no traversal | YES (edzsplit verify) |
 | Output EDZ is byte-compatible with the official container format (entry naming/ordering) | YES (synthetic round-trip + hexdump match of an official file) |
 | EDZ produced by this tool differs only by design (manifest clone) from source | YES (60/60 non-manifest members byte-identical) |
+| A second independent implementation (Rust port) produces identical outputs for an unseen manufacturer catalog | YES (474/474 Hirschmann split outputs, file name + SHA-256; see §4.7) |
 | EDZ imports into EPLAN Parts Database | **NOT DONE — environment blocked (§5)** |
 | Multi-part catalogs with heavy accessory-graph webs split correctly | partially (no accessory-rich sample available locally) |
